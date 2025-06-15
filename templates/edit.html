@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Transaction</title>
+</head>
+<body>
+    <h1>Edit Transaction</h1>
+
+    <form method="POST" action="/update">
+        <input type="hidden" name="index" value="{{ index }}">
+
+        {% for field in header %}
+            <label>{{ field }}:</label><br>
+            {% if field == 'Date' %}
+                <input type="date" name="{{ field }}" value="{{ transaction[field] }}" required><br><br>
+
+            {% elif field == 'Amount' %}
+                <input type="number" name="{{ field }}" value="{{ transaction[field] }}" step="0.01" min="0" required><br><br>
+
+            {% elif field == 'Type' %}
+                <select name="{{ field }}" required>
+                    <option value="Income" {% if transaction[field] == 'Income' %}selected{% endif %}>Income</option>
+                    <option value="Expense" {% if transaction[field] == 'Expense' %}selected{% endif %}>Expense</option>
+                </select><br><br>
+
+            {% else %}
+                <input type="text" name="{{ field }}" value="{{ transaction[field] }}" required><br><br>
+            {% endif %}        
+        {% endfor %}
+
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>

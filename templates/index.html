@@ -4,6 +4,16 @@
     <title>Finance Tracker</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul style="color: green;">
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
     <h1>Add a Transaction</h1>
 
     <form method="POST" action="/add">
@@ -53,6 +63,22 @@
             <td>{{ txn['Category'] }}</td>
             <td>{{ txn['Amount'] }}</td>
             <td>{{ txn['Type'] }}</td>
+            <td>
+                <form action="/edit" method="GET">
+                    <input type="hidden" name="index" value="{{ loop.index0 }}">
+                    <button type="submit">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="/delete" method="POST" style="display:inline;">
+                    <input type="hidden" name="date" value="{{ txn['Date'] }}">
+                    <input type="hidden" name="description" value="{{ txn['Description'] }}">
+                    <input type="hidden" name="category" value="{{ txn['Category'] }}">
+                    <input type="hidden" name="amount" value="{{ txn['Amount'] }}">
+                    <input type="hidden" name="type" value="{{ txn['Type'] }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </table>
